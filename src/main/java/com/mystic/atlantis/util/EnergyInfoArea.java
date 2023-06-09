@@ -6,6 +6,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentContents;
+import net.minecraft.network.chat.Style;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.energy.IEnergyStorage;
 
 /*
@@ -15,6 +18,8 @@ import net.minecraftforge.energy.IEnergyStorage;
  *  This code is licensed under "Blu's License of Common Sense"
  *  Details can be found in the license file in the root folder of this project
  */
+
+/*
 public class EnergyInfoArea extends InfoArea {
     private final IEnergyStorage energy;
 
@@ -46,4 +51,4 @@ public class EnergyInfoArea extends InfoArea {
                 0xffb51500, 0xff600b00
         );
     }
-}
+} */

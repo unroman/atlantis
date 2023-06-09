@@ -1,5 +1,6 @@
 package com.mystic.atlantis.items.item.energybased;
 
+/*
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -132,4 +133,4 @@ public class AtlanteanAmuletItem extends CurioItem {
         }
         super.readShareTag(stack, nbt);
     }
-}
+} */

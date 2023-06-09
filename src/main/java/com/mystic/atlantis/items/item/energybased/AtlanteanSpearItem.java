@@ -96,7 +96,7 @@ public class AtlanteanSpearItem extends DefaultItem {
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         if (getEnergyStorage(player.getItemInHand(hand)).getEnergyStored() >= 50) {
             if(!level.isClientSide && level instanceof ServerLevel serverLevel) {
-                LightningBolt lightningBoltEntity = EntityType.LIGHTNING_BOLT.create(serverLevel, new CompoundTag(), Component.empty(), player, getDistanceForLightningSummon(15, player), MobSpawnType.MOB_SUMMONED, false, false);
+                LightningBolt lightningBoltEntity = EntityType.LIGHTNING_BOLT.create(serverLevel);
                 if(lightningBoltEntity != null) {
                     getEnergyStorage(this.getDefaultInstance()).extractEnergy(50, false);
                     serverLevel.addFreshEntity(lightningBoltEntity);
@@ -109,7 +109,7 @@ public class AtlanteanSpearItem extends DefaultItem {
     public static BlockPos getDistanceForLightningSummon(int range, @NotNull Player player) {
         int yaw = (int) player.getYRot() + 180;
         double facing = (yaw - 90) * (Math.PI / 180);
-        return new BlockPos(player.getX() + (range * Math.cos(facing)), player.getY(), player.getZ() + (range * Math.sin(facing)));
+        return new BlockPos((int) (player.getX() + (range * Math.cos(facing))), (int) player.getY(), (int) (player.getZ() + (range * Math.sin(facing))));
     }
 
     @Override

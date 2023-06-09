@@ -5,6 +5,7 @@ import com.mystic.atlantis.init.BlockInit;
 import com.mystic.atlantis.init.RecipesInit;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -14,6 +15,10 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SingleItemRecipe;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class WritingRecipe extends SingleItemRecipe {
     public WritingRecipe(ResourceLocation arg, String string, Ingredient arg2, ItemStack arg3) {
@@ -26,13 +31,13 @@ public class WritingRecipe extends SingleItemRecipe {
     }
 
     @Override
-    public ItemStack getToastSymbol() {
+    public @NotNull ItemStack getToastSymbol() {
         return new ItemStack(BlockInit.WRITING_BLOCK.get());
     }
 
     public static class Serializer implements RecipeSerializer<WritingRecipe>
     {
-        public WritingRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+        public @NotNull WritingRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject json) {
             String s = GsonHelper.getAsString(json, "group", "");
             Ingredient ingredient;
             if (GsonHelper.isArrayNode(json, "ingredient")) {
@@ -43,7 +48,7 @@ public class WritingRecipe extends SingleItemRecipe {
 
             String s1 = GsonHelper.getAsString(json, "result");
             int i = GsonHelper.getAsInt(json, "count");
-            ItemStack itemstack = new ItemStack(Registry.ITEM.get(new ResourceLocation(s1)), i);
+            ItemStack itemstack = new ItemStack(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(s1))), i);
             return new WritingRecipe(recipeId, s, ingredient, itemstack);
         }
 

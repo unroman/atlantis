@@ -31,10 +31,7 @@ public class PushBubbleStreamParticle extends TextureSheetParticle {
       this.lifetime = (int)(Math.random() * 60.0D) + 30;
       this.hasPhysics = false;
 
-      Vector3f vec = direction.step();
-      vec.mul(0.5f);
-
-      this.setParticleSpeed(vec.x(), vec.y(), vec.z());
+      this.setParticleSpeed(direction.getStepX() * 0.5f, direction.getStepY() * 0.5f, direction.getStepZ() * 0.5f);
 
       this.setSize(0.02F, 0.02F);
       this.quadSize *= this.random.nextFloat() * 0.6F + 0.2F;
@@ -76,7 +73,7 @@ public class PushBubbleStreamParticle extends TextureSheetParticle {
 
          }
          this.move(this.xd, this.yd, this.zd);
-         if (!this.level.getFluidState(new BlockPos(this.x, this.y, this.z)).is(FluidTags.WATER) || this.onGround) {
+         if (!this.level.getFluidState(new BlockPos((int) this.x, (int) this.y,  (int) this.z)).is(FluidTags.WATER) || this.onGround) {
             this.remove();
          }
 

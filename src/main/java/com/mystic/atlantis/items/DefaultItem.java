@@ -13,6 +13,6 @@ public class DefaultItem extends Item {
     }
 
     public DefaultItem() {
-        this(new Properties().tab(AtlantisGroupInit.MAIN));
+        this(new Properties());
     }
 }

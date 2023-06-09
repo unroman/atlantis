@@ -1,8 +1,5 @@
 package com.mystic.atlantis;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.mystic.atlantis.blocks.ExtendedBlockEntity;
 import com.mystic.atlantis.capiablities.player.IPlayerCap;
 import com.mystic.atlantis.config.AtlantisConfig;
@@ -10,40 +7,24 @@ import com.mystic.atlantis.configfeature.AtlantisFeature;
 import com.mystic.atlantis.datagen.Providers;
 import com.mystic.atlantis.dimension.DimensionAtlantis;
 import com.mystic.atlantis.entities.blockbenchentities.CrabEntity;
-import com.mystic.atlantis.init.AtlantisEntityInit;
-import com.mystic.atlantis.init.AtlantisGroupInit;
-import com.mystic.atlantis.init.AtlantisModifierInit;
-import com.mystic.atlantis.init.AtlantisSoundEventInit;
-import com.mystic.atlantis.init.BlockInit;
-import com.mystic.atlantis.init.EffectsInit;
-import com.mystic.atlantis.init.FluidInit;
-import com.mystic.atlantis.init.FluidTypesInit;
-import com.mystic.atlantis.init.ItemInit;
-import com.mystic.atlantis.init.MenuTypeInit;
-import com.mystic.atlantis.init.PaintingVariantsInit;
-import com.mystic.atlantis.init.RecipesInit;
-import com.mystic.atlantis.init.TileEntityInit;
-import com.mystic.atlantis.init.ToolInit;
+import com.mystic.atlantis.init.*;
 import com.mystic.atlantis.particles.ModParticleTypes;
 import com.mystic.atlantis.screen.LinguisticScreen;
 import com.mystic.atlantis.screen.WritingScreen;
 import com.mystic.atlantis.structures.AtlantisStructures;
 import com.mystic.atlantis.util.Reference;
-
 import me.shedaniel.autoconfig.AutoConfig;
-import net.kyrptonaught.customportalapi.CustomPortalBlock;
 import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModContainer;
@@ -55,8 +36,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import software.bernie.example.GeckoLibMod;
-import software.bernie.geckolib3.GeckoLib;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import software.bernie.geckolib.GeckoLib;
 
 @Mod(Reference.MODID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -65,6 +47,7 @@ public class Atlantis {
 
     public Atlantis() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        bus.addListener(this::addCreative);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AtlantisConfig.CONFIG_SPEC);
         ModParticleTypes.PARTICLES.register(bus);
         bus.addListener(this::registerAllCapabilities);
@@ -72,6 +55,13 @@ public class Atlantis {
         AtlantisFeature.init(bus);
         AtlantisStructures.DEFERRED_REGISTRY_STRUCTURE.register(bus);
         Providers.init(bus);
+    }
+
+    public void addCreative(BuildCreativeModeTabContentsEvent event)
+    {
+        if (event.getTab() == AtlantisGroupInit.MAIN) {
+            event.accept();
+        }
     }
 
     private void registerAllCapabilities(final RegisterCapabilitiesEvent event) {
@@ -91,14 +81,12 @@ public class Atlantis {
     }
 
     //Don't remove needed for legacy portal block!
-    public static ResourceKey<Level> getOverworldKey() {
-        ResourceLocation OVERWORLD_ID = LevelStem.OVERWORLD.location();
-        return ResourceKey.create(Registry.DIMENSION_REGISTRY, OVERWORLD_ID);
+    public static ResourceKey<LevelStem> getOverworldKey() {
+        return LevelStem.OVERWORLD;
     }
 
     public void onInitialize(IEventBus bus) {
         GeckoLib.initialize();
-        GeckoLibMod.DISABLE_IN_DEV = true;
         BlockInit.init(bus);
         ItemInit.init(bus);
         PaintingVariantsInit.init(bus);
@@ -133,13 +121,10 @@ public class Atlantis {
                 .flatPortal()
                 .destDimID(new ResourceLocation("atlantis", "atlantis"))
                 .tintColor(0, 125, 255)
-                .customPortalBlock((CustomPortalBlock) BlockInit.ATLANTIS_CLEAR_PORTAL.get())
+                .customPortalBlock(BlockInit.ATLANTIS_CLEAR_PORTAL.get())
                 .registerPortal();
 
-        GeckoLibMod.DISABLE_IN_DEV = true;
-        event.enqueueWork(() -> {
-            DimensionAtlantis.registerBiomeSources();
-        });
+        event.enqueueWork(DimensionAtlantis::registerBiomeSources);
 
         ((ExtendedBlockEntity) BlockEntityType.SIGN).addAdditionalValidBlock(BlockInit.ATLANTEAN_SIGNS.get(), BlockInit.ATLANTEAN_WALL_SIGN.get());
 

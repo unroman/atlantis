@@ -1,9 +1,8 @@
 package com.mystic.atlantis.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.network.chat.Component;
 
 /*
  *  BluSunrize
@@ -12,7 +11,7 @@ import net.minecraft.client.renderer.Rect2i;
  *  This code is licensed under "Blu's License of Common Sense"
  *  Details can be found in the license file in the root folder of this project
  */
-public abstract class InfoArea extends GuiComponent {
+public abstract class InfoArea implements Component {
     protected final Rect2i area;
 
     protected InfoArea(Rect2i area) {

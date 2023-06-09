@@ -9,7 +9,6 @@ public class AquamarineShovel extends ShovelItem {
     public AquamarineShovel(Tier tier, int attack) {
         super(tier, attack, -3.2F, new Properties()
                 .stacksTo(1)
-                .defaultDurability(tier.getUses())
-                .tab(AtlantisGroupInit.MAIN));
+                .defaultDurability(tier.getUses()));
     }
 }

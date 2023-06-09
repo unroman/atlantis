@@ -22,7 +22,7 @@ public class JellyfishJellyBottle extends Item {
     private static final int DRINK_DURATION = 30;
 
     public JellyfishJellyBottle(Properties arg) {
-        super(arg.tab(AtlantisGroupInit.MAIN));
+        super(arg);
     }
 
     @Override

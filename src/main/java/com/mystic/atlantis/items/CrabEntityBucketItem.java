@@ -35,9 +35,8 @@ public class CrabEntityBucketItem extends MobBucketItem {
     }
 
     private void spawn(ServerLevel world, ItemStack stack, BlockPos pos) {
-        Entity entity = this.entityType.get().spawn(world, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
-        if (entity instanceof Bucketable) {
-            Bucketable bucketable = (Bucketable)entity;
+        Entity entity = this.entityType.get().spawn(world, stack, null, pos, MobSpawnType.BUCKET, true, false);
+        if (entity instanceof Bucketable bucketable) {
             bucketable.loadFromBucketTag(stack.getOrCreateTag());
             bucketable.setFromBucket(true);
         }

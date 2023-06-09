@@ -24,7 +24,7 @@ public class FireMelonJellyBottle extends Item {
     private static final int DRINK_DURATION = 30;
 
     public FireMelonJellyBottle(Properties arg) {
-        super(arg.tab(AtlantisGroupInit.MAIN));
+        super(arg);
     }
 
     @Override

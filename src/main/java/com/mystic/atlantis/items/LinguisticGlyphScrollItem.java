@@ -9,7 +9,7 @@ public class LinguisticGlyphScrollItem extends Item {
     private final LinguisticGlyph symbol;
 
     public LinguisticGlyphScrollItem(LinguisticGlyph symbol) {
-        super(new Properties().tab(AtlantisGroupInit.GLYPH));
+        super(new Properties());
         this.symbol = symbol;
     }
 

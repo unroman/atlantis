@@ -5,20 +5,9 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
 public class AtlantisGroupInit {
-    public static final CreativeModeTab MAIN = new CreativeModeTab(CreativeModeTab.getGroupCountSafe(), "atlantis.general") {
-        @Override
-        public ItemStack makeIcon() {
-            return BlockInit.CHISELED_GOLDEN_AQUAMARINE.get().asItem().getDefaultInstance();
-        }
-    }.setBackgroundImage(new ResourceLocation("atlantis", "textures/gui/tab_atlantis.png"));
+    public static final CreativeModeTab MAIN = CreativeModeTab.builder().withBackgroundLocation(new ResourceLocation("atlantis", "textures/gui/tab_atlantis.png")).withTabsImage(BlockInit.CHISELED_GOLDEN_AQUAMARINE.getId()).m_257609_("atlantis.general").m_257652_();
 
-    public static final CreativeModeTab GLYPH = new CreativeModeTab(CreativeModeTab.getGroupCountSafe(), "atlantis.glyph") {
-            @Override
-            public ItemStack makeIcon() {
-                return BlockInit.LINGUISTIC_BLOCK.get().asItem().getDefaultInstance();
-            }
-    }.setBackgroundImage(new ResourceLocation("atlantis", "textures/gui/tab_atlantis.png"));
-
+    public static final CreativeModeTab GLYPH = CreativeModeTab.builder().withTabsImage(BlockInit.LINGUISTIC_BLOCK.getId()).withBackgroundLocation(new ResourceLocation("atlantis", "textures/gui/tab_atlantis.png")).m_257609_( "atlantis.glyph").m_257652_();
 
     public static void init(){
     }

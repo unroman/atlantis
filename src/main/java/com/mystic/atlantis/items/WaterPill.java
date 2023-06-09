@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 
 public class WaterPill extends DefaultItem {
     public WaterPill() {
-        super(new Properties().stacksTo(16).tab(AtlantisGroupInit.MAIN));
+        super(new Properties().stacksTo(16));
     }
 
     @Override

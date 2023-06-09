@@ -19,14 +19,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class SubmarineEntity extends Boat implements IAnimatable {
+public class SubmarineEntity extends Boat implements GeoAnimatable {
     public boolean pressingForward;
     public float prevRoll = 0;
     public float rotorAngle;
@@ -99,10 +96,10 @@ public class SubmarineEntity extends Boat implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this,"main", 0f, event -> {
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this,"main", 0f, event -> {
             if(event.isMoving()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
+                event.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
                 return PlayState.CONTINUE;
             } else {
                 return PlayState.STOP;
@@ -110,9 +107,6 @@ public class SubmarineEntity extends Boat implements IAnimatable {
         }));
     }
 
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
+
 }
 

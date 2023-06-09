@@ -2,6 +2,7 @@ package com.mystic.atlantis.items;
 
 import java.util.function.Supplier;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -27,7 +28,7 @@ public class AtlanteanEntityBucketItem extends MobBucketItem {
     }
 
     @Override
-    public void checkExtraContent(@Nullable Player player, Level world, ItemStack stack, BlockPos pos) {
+    public void checkExtraContent(@Nullable Player player, @NotNull Level world, @NotNull ItemStack stack, @NotNull BlockPos pos) {
         if (world instanceof ServerLevel) {
             this.spawn((ServerLevel)world, stack, pos);
             world.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
@@ -35,9 +36,8 @@ public class AtlanteanEntityBucketItem extends MobBucketItem {
     }
 
     private void spawn(ServerLevel world, ItemStack stack, BlockPos pos) {
-        Entity entity = this.entityType.get().spawn(world, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
-        if (entity instanceof Bucketable) {
-            Bucketable bucketable = (Bucketable)entity;
+        Entity entity = this.entityType.get().spawn(world, stack, null, pos, MobSpawnType.BUCKET, true, false);
+        if (entity instanceof Bucketable bucketable) {
             bucketable.loadFromBucketTag(stack.getOrCreateTag());
             bucketable.setFromBucket(true);
         }

@@ -65,7 +65,7 @@ public class WritingMenu extends AbstractContainerMenu {
         super(MenuTypeInit.WRITING.get(), id);
         int j;
         this.access = accessLevel;
-        this.level = inventory.player.level;
+        this.level = inventory.player.getLevel();
         this.inputSlot = this.addSlot(new Slot(this.container, 0, 20, 33));
         this.resultSlot = this.addSlot(new Slot(this.resultContainer, 1, 143, 33){
 
@@ -76,8 +76,7 @@ public class WritingMenu extends AbstractContainerMenu {
 
             @Override
             public void onTake(Player player, ItemStack stack) {
-                stack.onCraftedBy(player.level, player, stack.getCount());
-                WritingMenu.this.resultContainer.awardUsedRecipes(player);
+                stack.onCraftedBy(player.getLevel(), player, stack.getCount());
                 ItemStack itemStack = WritingMenu.this.inputSlot.remove(1);
                 if (!itemStack.isEmpty()) {
                     WritingMenu.this.setupResultSlot();
@@ -162,7 +161,7 @@ public class WritingMenu extends AbstractContainerMenu {
         if (!this.recipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {
             WritingRecipe stonecutterRecipe = this.recipes.get(this.selectedRecipeIndex.get());
             this.resultContainer.setRecipeUsed(stonecutterRecipe);
-            this.resultSlot.set(stonecutterRecipe.assemble(this.container));
+            this.resultSlot.set(stonecutterRecipe.assemble(this.container, this.level.m_9598_()));
         } else {
             this.resultSlot.set(ItemStack.EMPTY);
         }
@@ -192,7 +191,7 @@ public class WritingMenu extends AbstractContainerMenu {
             Item item = itemStack2.getItem();
             itemStack = itemStack2.copy();
             if (index == 1) {
-                item.onCraftedBy(itemStack2, player.level, player);
+                item.onCraftedBy(itemStack2, player.getLevel(), player);
                 if (!this.moveItemStackTo(itemStack2, 2, 38, true)) {
                     return ItemStack.EMPTY;
                 }

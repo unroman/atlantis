@@ -3,12 +3,14 @@ package com.mystic.atlantis.structures;
 import com.mystic.atlantis.util.Reference;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class AtlantisStructures {
-    public static final DeferredRegister<StructureType<?>> DEFERRED_REGISTRY_STRUCTURE = DeferredRegister.create(Registry.STRUCTURE_TYPE_REGISTRY, Reference.MODID);
+    public static final DeferredRegister<StructureType<?>> DEFERRED_REGISTRY_STRUCTURE = DeferredRegister.create(BuiltInRegistries.f_256763_.key(), Reference.MODID);
 
     public static final RegistryObject<StructureType<AtlanteanCityStructure>> ATLANTEAN_CITY = DEFERRED_REGISTRY_STRUCTURE.register("atlantean_city", () -> () -> AtlanteanCityStructure.CODEC);
     public static final RegistryObject<StructureType<AtlanteanFountain>> ATLANTEAN_FOUNTAIN = DEFERRED_REGISTRY_STRUCTURE.register("atlantean_fountain", () -> () -> AtlanteanFountain.CODEC);

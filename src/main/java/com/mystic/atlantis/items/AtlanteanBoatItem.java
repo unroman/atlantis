@@ -32,22 +32,21 @@ public class AtlanteanBoatItem extends Item {
     }
     public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
         ItemStack itemStack = user.getItemInHand(hand);
-        HitResult hitResult = getPlayerPOVHitResult(world, user, ClipContext.Fluid.SOURCE_ONLY);
+        BlockHitResult hitResult = getPlayerPOVHitResult(world, user, ClipContext.Fluid.SOURCE_ONLY);
         if (hitResult.getType() != HitResult.Type.BLOCK) {
             return InteractionResultHolder.pass(itemStack);
         } else if (!(world instanceof ServerLevel)) {
             return InteractionResultHolder.success(itemStack);
         } else {
-            BlockHitResult blockHitResult = (BlockHitResult)hitResult;
-            BlockPos blockPos = blockHitResult.getBlockPos();
+            BlockPos blockPos = hitResult.getBlockPos();
             if (!(world.getBlockState(blockPos).getBlock() instanceof LiquidBlock)) {
                 return InteractionResultHolder.pass(itemStack);
-            } else if (world.mayInteract(user, blockPos) && user.mayUseItemAt(blockPos, blockHitResult.getDirection(), itemStack)) {
+            } else if (world.mayInteract(user, blockPos) && user.mayUseItemAt(blockPos, hitResult.getDirection(), itemStack)) {
                 AtlanteanBoatEntity boatEntity = new AtlanteanBoatEntity(AtlantisEntityInit.ATLANTEAN_BOAT.get(), world);
                 boatEntity.setPos(hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z);
                 boatEntity.setYRot(user.getYRot());
                 world.addFreshEntity(boatEntity);
-                world.gameEvent(user, GameEvent.ENTITY_PLACE, new BlockPos(hitResult.getLocation()));
+                world.gameEvent(user, GameEvent.ENTITY_PLACE, hitResult.getBlockPos());
                 if (!user.getAbilities().instabuild) {
                     itemStack.shrink(1);
                 }
@@ -90,7 +89,7 @@ public class AtlanteanBoatItem extends Item {
             {
                 if (!world.isClientSide) {
                     world.addFreshEntity(boatEntity);
-                    world.gameEvent(user, GameEvent.ENTITY_PLACE, new BlockPos(hitResult.getLocation()));
+                    world.gameEvent(user, GameEvent.ENTITY_PLACE, hitResult.getLocation());
                     if (!user.getAbilities().instabuild) {
                         itemStack.shrink(1);
                     }

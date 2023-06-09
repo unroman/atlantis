@@ -1,7 +1,6 @@
 package com.mystic.atlantis.lighting;
 
 import com.mystic.atlantis.event.ACommonFEvents;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
@@ -19,13 +18,11 @@ public class AtlantisChunkSkylightProvider extends SkyLightEngine {
 	}
 
 	@Override
-	protected int computeLevelFromNeighbor(long sourceId, long targetId, int level) {
-		int propagatedLevel = super.computeLevelFromNeighbor(sourceId, targetId, level);
-
+	protected void m_284316_(long sourceId, long targetId, int lightLevel) {
 		BlockPos blockPos = BlockPos.of(targetId);
 		ChunkPos chunkPos = new ChunkPos(blockPos);
 
-		BlockGetter blockGetter = chunkSource.getChunkForLighting(chunkPos.x, chunkPos.z);
+		BlockGetter blockGetter = f_283884_.getChunkForLighting(chunkPos.x, chunkPos.z);
 		if (blockGetter instanceof ChunkAccess chunkAccess) {
 			Holder<Biome> biome = chunkAccess.getNoiseBiome(
 					QuartPos.fromBlock(blockPos.getX()),
@@ -35,13 +32,12 @@ public class AtlantisChunkSkylightProvider extends SkyLightEngine {
 			if(biome.unwrapKey().isPresent()) {
 				if (ACommonFEvents.map != null) {
 					if (ACommonFEvents.map.containsKey(biome.unwrapKey().get().location())) {
-						return Math.min(ACommonFEvents.map.get(biome.unwrapKey().get().location()), propagatedLevel);
+						super.m_284316_(targetId, sourceId, ACommonFEvents.map.get(biome.unwrapKey().get().location()));
 					}
 				} else {
-					return Math.min(15, propagatedLevel);
+					super.m_284316_(targetId, sourceId, lightLevel);
 				}
 			}
 		}
-		return propagatedLevel;
 	}
 }

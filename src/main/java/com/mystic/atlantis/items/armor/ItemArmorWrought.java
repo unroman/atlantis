@@ -5,7 +5,10 @@ import java.util.Random;
 
 import com.google.common.collect.ImmutableMap;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -22,15 +25,14 @@ public class ItemArmorWrought extends ArmorItem {
             (new ImmutableMap.Builder<ArmorMaterial, MobEffect>())
                     .put(BasicArmorMaterial.ARMOR_BROWN_WROUGHT, MobEffects.INVISIBILITY).build();
 
-    public ItemArmorWrought(ArmorMaterial material, EquipmentSlot slot, Properties settings) {
+    public ItemArmorWrought(ArmorMaterial material, Type slot, Properties settings) {
         super(material, slot, settings);
     }
 
     @Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean selected) {
         if(!world.isClientSide()) {
-            if(entity instanceof Player) {
-                Player player = (Player)entity;
+            if(entity instanceof Player player) {
 
                 if(hasFullSuitOfArmorOn(player)) {
                     evaluateArmorEffects(player);
@@ -59,7 +61,7 @@ public class ItemArmorWrought extends ArmorItem {
             player.addEffect(new MobEffectInstance(mapStatusEffect, 200));
 
             if(new Random().nextFloat() > 0.6f) { // 40% of damaging the armor! Possibly!
-                player.getInventory().hurtArmor(DamageSource.MAGIC, 1f, new int[]{0, 1, 2, 3});
+                player.getInventory().hurtArmor(new DamageSource(new Holder.Direct<>(new DamageType("indirectMagic", 0.0F))), 1f, new int[]{0, 1, 2, 3});
             }
         }
     }
